@@ -2,7 +2,7 @@ package Magic;
 
 import java.util.Map;
 
-public class MH3ArenaDirect extends MagicEvent{
+public class MH3ArenaDirect extends MagicEvent {
     public MH3ArenaDirect() {
         super(7, 2, 8000, Map.of(
                 0, 0,
