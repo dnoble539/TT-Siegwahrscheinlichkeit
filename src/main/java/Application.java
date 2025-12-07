@@ -1,4 +1,4 @@
-import Magic.*;
+import magic.*;
 import math.Probability;
 
 import java.math.BigDecimal;

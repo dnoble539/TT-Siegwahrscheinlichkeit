@@ -1,4 +1,4 @@
-package Magic;
+package magic;
 
 import java.util.Map;
 

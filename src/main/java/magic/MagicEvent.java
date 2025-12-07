@@ -1,4 +1,4 @@
-package Magic;
+package magic;
 
 import math.Probability;
 
@@ -53,7 +53,6 @@ public class MagicEvent {
             return BigDecimal.ZERO;
         }
         if (n == maxWins) {
-            // ist das nicht falsch das hier rechnet 7 über 0 + 7 über 1 + 7 über 2, aber 7 über 1 enthält schon alle 7 über 0 Fälle und 7 über 2 enthält alle 7 über 1 Fälle
             return sum(0, maxLosses - 1, i -> probabilityForMHitsInNTries(n + i-1, n-1, gameWinPercentage)).multiply(gameWinPercentage.winProb());
         }
         return probabilityForMHitsInNTries(n + maxLosses - 1, n, gameWinPercentage)
