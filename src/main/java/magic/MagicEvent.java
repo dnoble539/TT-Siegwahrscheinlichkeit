@@ -7,6 +7,7 @@ import math.Probability;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static math.MathFunctions.sum;
 import static math.StochasticFunctions.probabilityForMHitsInNTries;
@@ -15,10 +16,10 @@ public class MagicEvent {
     private final int maxWins;
     private final int maxLosses;
     private final CashAmount cost;
-    private final Map<Integer, EventPrice> priceStructure;
+    private final Map<Integer, Set<EventPrice>> priceStructure;
     private final Currency baseCurrency;
 
-    public MagicEvent(int maxWins, int maxLosses, CashAmount cost, Map<Integer, EventPrice> priceStructure) {
+    public MagicEvent(int maxWins, int maxLosses, CashAmount cost, Map<Integer, Set<EventPrice>> priceStructure) {
         if (maxWins < 0 || maxLosses < 0) {
             throw new IllegalArgumentException();
         }
@@ -34,11 +35,19 @@ public class MagicEvent {
         BigDecimal overallWinning = BigDecimal.ZERO;
         for (int i = 0; i <= maxWins; i++) {
             BigDecimal likeliHood = likeliHoodPerWinTable.get(i);
-            var price = priceStructure.get(i).toAmountIn(baseCurrency).minus(cost);
-            BigDecimal winOnAverage = likeliHood.multiply(price.amount());
+            var price = calculatePriceFromAll(priceStructure.get(i));
+            BigDecimal winOnAverage = likeliHood.multiply(price);
             overallWinning = overallWinning.add(winOnAverage);
         }
         return new CashAmount(overallWinning, baseCurrency);
+    }
+
+    private BigDecimal calculatePriceFromAll(Set<EventPrice> priceEvents) {
+        return priceEvents.stream()
+                .map((eventPrice) -> eventPrice.toAmountIn(baseCurrency).amount())
+                .reduce(BigDecimal::add)
+                .map(price -> price.subtract(cost.amount()))
+                .orElseThrow();
     }
 
     public Map<Integer, BigDecimal> calculateLikeliHoodPerWinForGivenGameWinPercentage(Probability gameWinPercentage) {

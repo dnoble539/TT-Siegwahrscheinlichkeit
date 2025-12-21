@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class Application {
 
-    static void main() {
-        MagicEvent premierDraft = new MH3ArenaDirect();
-        String gewinnwahrscheinlichkeit = "0.60";
+    public static void main(String[] args) {
+        MagicEvent premierDraft = new LimitedChampionShip(new Probability(BigDecimal.valueOf(0.6)));
+        String gewinnwahrscheinlichkeit = "0.55";
         Probability gameWinPercentage = new Probability(new BigDecimal(gewinnwahrscheinlichkeit));
         Map<Integer, BigDecimal> winToPercentageMap = premierDraft.calculateLikeliHoodPerWinForGivenGameWinPercentage(gameWinPercentage);
         winToPercentageMap.forEach(
