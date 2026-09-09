@@ -1,20 +1,31 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
 group = 'com.stats'
 version = '1.0'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(19)
+    }
+}
+
 repositories {
     mavenCentral()
+    mavenLocal()   // Fallback, falls ohne Composite Build gebaut wird
 }
 
 dependencies {
+    implementation 'com.stats:probability-math:1.0'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
     testImplementation 'org.assertj:assertj-core:3.25.2'
-    testImplementation 'org.mockito:mockito-core:5.11.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+}
+
+application {
+    mainClass = 'Application'
 }
 
 test {
