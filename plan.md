@@ -6,6 +6,37 @@ Das `math`-Package als eigenständige Java-Library auslagern und `tischtennis`
 sowie `magic` in getrennte Repositories überführen, die diese Library
 konsumieren. Nutzung rein privat, auf dem eigenen Rechner.
 
+## Status der Umsetzung (2026-09-10)
+
+Umgesetzt, rein lokal, kein GitHub. Ergebnis:
+
+- `C:\Users\User\IdeaProjects\probability-math` — Branch `main`, Commit
+  "Initial math library". `gradlew.bat build` grün (3 Testklassen), zusätzlich
+  `publishToMavenLocal` → `~/.m2/.../com/stats/probability-math/1.0/`.
+- `C:\Users\User\IdeaProjects\magic-arena-ev` — Branch `main`, Commit
+  "Initial magic arena EV calculator". `gradlew.bat build` grün,
+  `gradlew.bat run` liefert `Der Gewinn ... 175.30114867671125000000000` —
+  zahlenidentisch zum Vor-Split-Stand (die Textdifferenz zum Anker war reines
+  Konsolen-Encoding).
+- `TT-Siegwahrscheinlichkeit` (dieses Repo) — Branch `split-into-repos` erstellt,
+  committet und per `--no-ff` nach `main` gemergt, Branch gelöscht. **Nicht
+  gepusht.** `math`/`magic`/`finance` entfernt, neuer TT-`Application`,
+  `MatchTest` als Characterization-Test.
+
+Abweichungen vom Plan unten:
+
+- **Java-Toolchain 19 statt 21** — kein JDK 21 auf dem Rechner; installiert und
+  von Gradle automatisch erkannt ist `~/.jdks/corretto-19.0.2` (das ist auch das
+  JDK, mit dem das Monorepo bisher gebaut wurde).
+- **Kein GitHub** — die drei Repos bleiben lokal. Schritte zum Anlegen/Pushen
+  entfallen.
+- **`includeBuild` dauerhaft aktiv** (nicht auskommentiert), da keine CI.
+- `Match.chanceToWinMatchGiven` wirft für realistische Parameter eine
+  `IllegalArgumentException` (vorbestehender, aus dem Monorepo übernommener
+  Bug: `m > n` an `probabilityForMOrLessHitsInNTries`). `Application` fängt das
+  ab und meldet die Berechnung als "noch nicht funktionsfähig"; `MatchTest`
+  pinnt dieses Verhalten.
+
 ## Brauche ich JitPack?
 
 **Nein.** JitPack löst das Problem "andere Leute / andere Rechner sollen meine
@@ -114,7 +145,7 @@ Test-Dependency deklariert, wird aber nirgends verwendet — beim Split weglasse
     version = '1.0'
 
     java {
-        toolchain { languageVersion = JavaLanguageVersion.of(21) }
+        toolchain { languageVersion = JavaLanguageVersion.of(19) }
         withSourcesJar()
     }
 
@@ -160,7 +191,7 @@ Test-Dependency deklariert, wird aber nirgends verwendet — beim Split weglasse
     version = '1.0'
 
     java {
-        toolchain { languageVersion = JavaLanguageVersion.of(21) }
+        toolchain { languageVersion = JavaLanguageVersion.of(19) }
     }
 
     repositories {
@@ -207,7 +238,7 @@ Test-Dependency deklariert, wird aber nirgends verwendet — beim Split weglasse
     version = '1.0'
 
     java {
-        toolchain { languageVersion = JavaLanguageVersion.of(21) }
+        toolchain { languageVersion = JavaLanguageVersion.of(19) }
     }
 
     repositories {
@@ -249,7 +280,7 @@ Test-Dependency deklariert, wird aber nirgends verwendet — beim Split weglasse
   in den neuen Repos.
 - Ohne gepinnte Toolchain baut es lokal anders als erwartet (System-`java` ist
   1.8, Gradle 8.14 läuft über ein anderes JDK) — in allen drei Repos
-  `JavaLanguageVersion.of(21)` setzen.
+  `JavaLanguageVersion.of(19)` setzen.
 - Default-Package `Application.java` lässt sich nicht importieren — unkritisch,
   jedes App-Repo bekommt seinen eigenen Einstiegspunkt.
 - Composite Build braucht `probability-math/` als Nachbarordner; fehlt er,
