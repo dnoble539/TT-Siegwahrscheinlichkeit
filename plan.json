@@ -26,8 +26,7 @@
       "produces": "versioniertes JAR, publiziert via JitPack / publishToMavenLocal"
     },
     {
-      "name": "tt-siegwahrscheinlichkeit",
-      "type": "application",
+      "name": "tt-siegwahrscheinlichkeit",      "type": "application",
       "strategy": "bestehendes Repo umbauen (Namensgeber)",
       "contains": ["src/main/java/tischtennis/**", "neuer TT-Application-Einstiegspunkt"],
       "dependsOn": ["probability-math"]
