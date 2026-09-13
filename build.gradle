@@ -7,17 +7,17 @@ version = '1.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(19)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 repositories {
     mavenCentral()
-    mavenLocal()   // Fallback, falls ohne Composite Build gebaut wird
+    maven { url 'https://jitpack.io' }   // liefert com.github.dnoble539:MathLib
 }
 
 dependencies {
-    implementation 'com.stats:probability-math:1.0'
+    implementation 'com.github.dnoble539:MathLib:v1.1.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'

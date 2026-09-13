@@ -1,6 +1,1 @@
 rootProject.name = 'tt-siegwahrscheinlichkeit'
-
-// probability-math wird als Nachbarordner erwartet und transparent statt der
-// Maven-Dependency verwendet. Fehlt der Ordner, fällt Gradle auf mavenLocal()
-// zurück (dort dann `gradlew.bat publishToMavenLocal` im Library-Repo nötig).
-includeBuild '../probability-math'
